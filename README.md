@@ -45,7 +45,6 @@ Before running this application, ensure you have the following installed:
    DB_USER=root
    DB_PASS=your_app_password
    ```
-   **Note:** For Gmail, you need to generate an App Password. Enable 2-step verification for your Google account, then generate an App Password for this application.
 4. Start the backend server:
    ```bash
    npm run dev
