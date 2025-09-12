@@ -1,8 +1,9 @@
-# Note App
-A full-stack note-taking application with user authentication and email OTP verification.
+# Store App
+A full-stack store Rating application with Role based authentication.
 ## Features
-- User registration and login with OTP verification via email
-- Create, read and delete notes
+- User registration and login
+- Admin,ShopOwner,User
+- Users rate shop.
 - Secure user authentication using JWT
 
 ## Tech Stack
@@ -14,14 +15,14 @@ A full-stack note-taking application with user authentication and email OTP veri
 ### Backend
 - Node.js
 - Express.js
-- MongoDB with Mongoose ODM
+- MySql
 - JWT for authentication
-- Nodemailer for sending emails
+
 ## Prerequisites
 Before running this application, ensure you have the following installed:
 - Node.js (v14 or higher)
-- MongoDB (either locally or a cloud instance like MongoDB Atlas)
-- An email account (Gmail recommended) for sending OTPs
+- MySQL (either locally or a cloud instance)
+
 ## Installation
 ### Backend Setup
 1. Clone the repository:
@@ -37,13 +38,12 @@ Before running this application, ensure you have the following installed:
    - Rename `example.env` to `.env`
    - Update the following variables in the `.env` file:
    ```bash
-   MONGODB_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret_key
    JWT_EXPIRE=2d
-   EMAIL_HOST=smtp.gmail.com
-   EMAIL_PORT=587
-   EMAIL_USER=your_email@gmail.com
-   EMAIL_PASS=your_app_password
+   DB_HOST=localhost
+   DB_NAME=database_name
+   DB_USER=root
+   DB_PASS=your_app_password
    ```
    **Note:** For Gmail, you need to generate an App Password. Enable 2-step verification for your Google account, then generate an App Password for this application.
 4. Start the backend server:
@@ -75,11 +75,10 @@ Before running this application, ensure you have the following installed:
 ## Usage
 1. **Registration**: 
    - Open the application and sign up with your email.
-   - You will receive an OTP via email. Enter the OTP to verify your account.
 2. **Login**:
-   - After verification, log in with your email and password.
+   - After registration,log in with your email and password.
 3. **Notes**:
-   - Once logged in, you can create, view and delete your notes.
+   - Once logged in, you can rate shops.
 
 ## Scripts
 ### Backend Scripts
@@ -90,22 +89,14 @@ Before running this application, ensure you have the following installed:
 - `npm run preview`: Previews the production build.
 ## Environment Variables
 ### Backend (.env)
-- `MONGODB_URI`: MongoDB connection string.
 - `JWT_SECRET`: Secret key for signing JWT tokens.
 - `JWT_EXPIRE`: Expiration time for JWT tokens (e.g., 2d, 7h).
-- `EMAIL_HOST`: SMTP server host (e.g., smtp.gmail.com).
-- `EMAIL_PORT`: SMTP server port (e.g., 587).
-- `EMAIL_USER`: Your email address.
-- `EMAIL_PASS`: App password for your email account.
+- `DB_HOST`: Database hostname
+- `DB_NAME`: Database name
+- `DB_USER`: Database user name
+- `DB_PASS`: Database password
 ### Frontend (.env)
 - `VITE_BASE_URL`: Base URL of your backend API.
-## Troubleshooting
-- **Email not sending**: Ensure that you have enabled less secure apps or generated an App Password for your Gmail account.
-- **Connection to MongoDB fails**: Check your MongoDB connection string and ensure your database is running.
-- **Environment variables not loading**: Make sure you have renamed `example.env` to `.env` in both frontend and backend.
-
-## Contact
-
 
 ## Contact 
 
