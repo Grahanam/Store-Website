@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import { useUser } from "../../hooks/useUser"
+import { useEffect } from "react"
 
 
 function Unauthorized() {
@@ -14,6 +15,9 @@ function Unauthorized() {
             navigate('/')
         }
     }
+    useEffect(()=>{
+         todashboard()
+    },[])
     return <>
         <div className="flex flex-col h-full justify-center ">
             <h1>Unauthorized Page</h1>
