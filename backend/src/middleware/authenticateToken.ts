@@ -1,8 +1,23 @@
 import { Request, Response,NextFunction } from "express";
-import jwt, { JwtPayload } from 'jsonwebtoken';
+import jwt from 'jsonwebtoken';
 
+interface JwtPayload {
+  sub: string;
+  role: string;
+  iat: number;
+  exp: number;
+}
 
-
+declare global {
+  namespace Express {
+    interface Request {
+      user?: {
+        id: string;
+        role: string;
+      };
+    }
+  }
+}
 
 export const authenticateToken = (roles:string[])=>(req: Request, res: Response, next: NextFunction) => {
 
@@ -25,7 +40,10 @@ export const authenticateToken = (roles:string[])=>(req: Request, res: Response,
       return res.status(403).json({ message: "Access denied" });
     }
 
-    (req as any).user = decoded;
+    req.user = {
+      id:decoded.sub,
+      role:decoded.role
+    };
     
     next();
   } catch (error) {

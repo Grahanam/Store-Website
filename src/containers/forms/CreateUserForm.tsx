@@ -34,9 +34,10 @@ interface IStore {
 
 type CreateUserFormProps={
     handleGetUsers:()=>void;
+    handleGetStores:()=>void;
 }
 
-const CreateUserForm:React.FC<CreateUserFormProps>=({handleGetUsers})=> {
+const CreateUserForm:React.FC<CreateUserFormProps>=({handleGetUsers,handleGetStores})=> {
     const user = useUser();
 
     const [message, setMessage] = useState('')
@@ -119,6 +120,7 @@ const CreateUserForm:React.FC<CreateUserFormProps>=({handleGetUsers})=> {
                 }))
                 handleClose();
                 handleGetUsers();
+                handleGetStores();
                 showMessage("New User Created!");
             }
 

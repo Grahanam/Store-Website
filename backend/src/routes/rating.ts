@@ -6,8 +6,8 @@ const router=express.Router();
 router.get('/getRatings',getRatings);
 router.get('/getUserRatings/:userId',getUserRatings);
 router.get('/getStoreRatings/:userId',getStoreRatings);
-router.post('/create/:userId',createRating);
-router.put('/update/:ratingId',updateRating);
+router.post('/create',createRating);
+router.put('/update',updateRating);
 
 export default router;
 

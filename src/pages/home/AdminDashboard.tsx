@@ -243,7 +243,7 @@ function AdminDashboard() {
               </div>
             </div>
 
-            <CreateUserForm handleGetUsers={() => handleGetUsers(userFilters)} />
+            <CreateUserForm handleGetUsers={() => handleGetUsers(userFilters)} handleGetStores={()=>handleGetStores(storeFilters)} />
 
             {/* Users List */}
             <div className="my-4">
