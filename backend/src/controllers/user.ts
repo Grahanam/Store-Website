@@ -44,9 +44,7 @@ export const createUser = [authenticateToken(['admin']),
       }
 
       if (role === "owner") {
-        console.log(result)
         const ownerId = result.insertId;
-        console.log(ownerId)
         await db.query(
           `INSERT INTO stores (id, name, email, address, owner_id) 
            VALUES (UUID(), ?, ?, ?, ?)`,
@@ -56,6 +54,40 @@ export const createUser = [authenticateToken(['admin']),
 
       return res.status(201).json({
         message: "User created successfully",
+      });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: "Server error", error });
+    }
+  },
+];
+
+// Upate User
+export const updateUser = [authenticateToken(['admin','user','owner']),
+  async (req: Request, res: Response) => {
+    try {
+      const {password} = req.body;
+      const userId = req.user?.id;
+
+      const existingUser: any = await db.query(
+        "SELECT * FROM users WHERE id = ?",
+        [userId]
+      );
+
+      if (existingUser.length == 0) {
+        return res.status(400).json({ message: "User does not exists" });
+      }
+
+      const hashedPassword = await bcrypt.hash(password, 12);
+
+      const result: any = await db.query(`UPDATE users SET password = ? WHERE id = ?`,[hashedPassword,userId]);
+
+      if (!result.affectedRows) {
+        return res.status(500).json({ message: "Error in creating user" });
+      }
+
+      return res.status(201).json({
+        message: "User updated successfully",
       });
     } catch (error) {
       console.error(error);

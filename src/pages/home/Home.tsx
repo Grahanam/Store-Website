@@ -5,6 +5,7 @@ import axios from "axios";
 import { FormControl, Icon, InputLabel, MenuItem, Select, TextField } from "@mui/material";
 import RatingForm from "../../containers/forms/RatingForm";
 import { Star } from "@mui/icons-material";
+import UpdateUserForm from "../../containers/forms/UpdateUserForm";
 
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
@@ -124,6 +125,7 @@ function Home() {
               <p className="text-[22px] font-[700] md:text-[32px] text-[#232323] ">Welcome, {user.name}</p>
 
               <p className="text-[18px] md:text-[22px] font-[400] text-[#969696] py-4 ">Email: {user.email}</p>
+              <UpdateUserForm/>
             </div>
 
             {/* Stores List*/}
