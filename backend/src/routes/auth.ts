@@ -1,11 +1,11 @@
 import express from "express";
-import {signup,signin} from "../controllers/auth"
+import {signup,signin, validateSignin, validateSignup} from "../controllers/auth"
 
 
 const router=express.Router();
 
-router.post('/signup',signup);
-router.post('/signin',signin);
+router.post('/signup',validateSignup,signup);
+router.post('/signin',validateSignin,signin);
 
 export default router;
 

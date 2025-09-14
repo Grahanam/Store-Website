@@ -150,7 +150,7 @@ function SignUp() {
                                     </button>
 
                                 </div>
-                                <div className="h-5">
+                                <div className="">
                                     {message && (
                                         <div className={`pt-1 pb-3 text-center ${message.includes('success') ? 'text-green-600' : 'text-red-600'}`}>
                                             {message}
