@@ -149,13 +149,13 @@ const CreateUserForm:React.FC<CreateUserFormProps>=({handleGetUsers,handleGetSto
                 type="button"
                 onClick={handleOpen}
             >Create New User </button>
-            <div className="h-5 mt-4">
+            {/* <div className="mt-4">
                 {message && (
                     <div className={`pt-1 pb-3 text-center ${message.includes('success') ? 'text-green-600' : 'text-red-600'}`}>
                         {message}
                     </div>
                 )}
-            </div>
+            </div> */}
 
             <Modal
                 open={open}
@@ -290,6 +290,14 @@ const CreateUserForm:React.FC<CreateUserFormProps>=({handleGetUsers,handleGetSto
                             {isCreatingUser ? "Creating..." : "Create"}
                         </button>
                     </div>
+
+                    <div className="mt-4">
+                {message && (
+                    <div className={`pt-1 pb-3 text-center ${message.includes('success') ? 'text-green-600' : 'text-red-600'}`}>
+                        {message}
+                    </div>
+                )}
+            </div>
                 </Box>
             </Modal>
         </div>
