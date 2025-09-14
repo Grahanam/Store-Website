@@ -97,6 +97,58 @@ Before running this application, ensure you have the following installed:
 ### Frontend (.env)
 - `VITE_BASE_URL`: Base URL of your backend API.
 
+### Database 
+```bash
+// To create Tables in MySql:
+CREATE TABLE users(
+   id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+   name VARCHAR(100) NOT NULL,
+   email VARCHAR(150) NOT NULL UNIQUE,
+   password VARCHAR(255) NOT NULL,
+   address TEXT,
+   role ENUM('admin','owner','user')DEFAULT 'user',
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE ratings(
+   id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+   store_id CHAR(36) NOT NULL,
+   owner_id CHAR(36) NOT NULL,
+   user_id CHAR(36) NOT NULL,
+   rating TINYINT NOT NULL CHECK (rating BETWEEN 1 AND 5),
+   created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+   updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+   FOREIGN KEY (store_id) REFERENCES stores(id) ON DELETE CASCADE,
+   FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE,
+   FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+   UNIQUE KEY unique_rating (store_id, user_id)
+);
+
+CREATE TABLE stores (
+    id CHAR(36) PRIMARY KEY DEFAULT(UUID()),
+    name VARCHAR(255) NOT NULL,
+    email VARCHAR(255) UNIQUE NOT NULL,
+    address VARCHAR(400) NOT NULL,
+    owner_id CHAR(36) NOT NULL,
+    average_rating DECIMAL(3,2) DEFAULT 0,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+    FOREIGN KEY (owner_id) REFERENCES users(id) ON DELETE CASCADE
+);
+
+// To create admin account use following code:
+  
+  const hashedPassword = await bcrypt.hash(password, 12);
+
+    const userId = uuidv4();
+
+    const result: any = await db.query(
+      `INSERT INTO users (id, name, email, address, password, role) 
+         VALUES (?, ?, ?, ?, ?, ?)`,
+      [userId, name, email, address, hashedPassword, role]
+    );
+```
+
 ## Contact 
 
 For any inquiries or questions,please react out: 
