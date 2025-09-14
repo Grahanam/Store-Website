@@ -5,25 +5,51 @@ import db from "../database/db";
 // Create Rating
 export const createRating = [authenticateToken(['user']), async (req: Request, res: Response) => {
   try {
-    const { storeId, rating, ownerId } = req.body;
+    const { storeId, rating } = req.body;
     const userId = req.user?.id;
 
-    if (!storeId) {
-      return res.status(400).json({ message: 'StoreId is required' });
+    if (!storeId || !rating) {
+      return res.status(400).json({ message: 'StoreId and rating are required' });
     }
 
-    const user: any = await db.query(`SELECT * FROM users where id = ? LIMIT 1`, userId);
-    if (user.length == 0) {
-      return res.status(404).json({ message: 'User not found' });
+    if (rating < 1 || rating > 5) {
+      return res.status(400).json({ message: 'Rating must be between 1 and 5' });
     }
 
-    const result: any = await db.query(`INSERT INTO ratings SET ?`, { store_id: storeId, user_id: userId, rating, owner_id: ownerId });
-    let message = 'Error in creating rating';
+    const existingRating: any = await db.query(
+      `SELECT * FROM ratings WHERE store_id = ? AND user_id = ? LIMIT 1`, 
+      [storeId, userId]
+    );
+    
+    if (existingRating.length > 0) {
+      return res.status(400).json({ message: 'You have already rated this store' });
+    }
+
+    const storeData: any = await db.query(
+      `SELECT owner_id FROM stores WHERE id = ? LIMIT 1`, 
+      [storeId]
+    );
+    
+    if (storeData.length === 0) {
+      return res.status(404).json({ message: 'Store not found' });
+    }
+    
+    const ownerId = storeData[0].owner_id;
+
+    const result: any = await db.query(
+      `INSERT INTO ratings (store_id, user_id, rating, owner_id) VALUES (?, ?, ?, ?)`, 
+      [storeId, userId, rating, ownerId]
+    );
+
     if (result.affectedRows) {
-      message = "Record created successfullly"
+  
+      await updateStoreAverageRating(storeId);
+      
       return res.status(201).json({
-        message
+        message: "Rating created successfully"
       });
+    } else {
+      return res.status(500).json({ message: 'Error creating rating' });
     }
   } catch (error) {
     console.error(error);
@@ -31,29 +57,69 @@ export const createRating = [authenticateToken(['user']), async (req: Request, r
   }
 }];
 
-//update Rating
-export const updateRating = [authenticateToken(['user']),async (req: Request, res: Response) => {
+// Update Rating
+export const updateRating = [authenticateToken(['user']), async (req: Request, res: Response) => {
   try {
-    const { storeId, rating, ownerId } = req.body;
+    
+    const { storeId, rating } = req.body;
     const userId = req.user?.id;
 
-    const existing: any = await db.query(`SELECT * FROM ratings WHERE store_id = ? AND user_id = ? AND owner_id = ? LIMIT 1`, [storeId, userId, ownerId])
+    if (!storeId || !rating) {
+      return res.status(400).json({ message: 'StoreId and rating are required' });
+    }
+
+    if (rating < 1 || rating > 5) {
+      return res.status(400).json({ message: 'Rating must be between 1 and 5' });
+    }
+
+    const existing: any = await db.query(
+      `SELECT * FROM ratings WHERE store_id = ? AND user_id = ? LIMIT 1`, 
+      [storeId, userId]
+    );
+    
     if (existing.length === 0) {
-      res.status(401).json({ message: "Rating with this id does not exist" })
+      return res.status(404).json({ message: "Rating not found" });
     }
 
-    const result: any = await db.query(`UPDATE ratings SET rating = ? WHERE user_id = ?`, [rating, userId])
+    const result: any = await db.query(
+      `UPDATE ratings SET rating = ? WHERE store_id = ? AND user_id = ?`, 
+      [rating, storeId, userId]
+    );
 
-    let message = 'Error in updating rating';
     if (result.affectedRows) {
-      message = "Rating updated successfully"
+    
+      await updateStoreAverageRating(storeId);
+      return res.status(201).json({ 
+        message: "Rating updated successfully" 
+      });
+    } else {
+      return res.status(500).json({ message: 'Error updating rating' });
     }
-    return res.status(201).json({ message });
   } catch (error) {
+    console.error(error);
     res.status(500).json({ message: 'Server error', error: error });
   }
-}
-]
+}];
+
+// Helper function to update store average rating
+const updateStoreAverageRating = async (storeId: string) => {
+  try {
+    
+    const avgResult: any = await db.query(
+      `SELECT AVG(rating) as average FROM ratings WHERE store_id = ?`,
+      [storeId]
+    );
+    
+    const averageRating = avgResult[0].average || 0;
+    
+    await db.query(
+      `UPDATE stores SET average_rating = ? WHERE id = ?`,
+      [averageRating, storeId]
+    );
+  } catch (error) {
+    console.error('Error updating store average rating:', error);
+  }
+};
 
 //Get All Ratings
 export const getRatings = [async (req: Request, res: Response) => {

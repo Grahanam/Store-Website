@@ -16,7 +16,7 @@ interface Store {
   address: string;
   average_rating: number;
   created_at: string;
-  owner_id:string;
+  owner_id: string;
   owner_name: string;
   owner_email: string;
   owner_address: string;
@@ -73,8 +73,6 @@ function Home() {
         }
       });
 
-      console.log(response.data.data)
-
       setStores(response.data.data);
     } catch (error) {
       if (axios.isAxiosError(error)) {
@@ -125,97 +123,97 @@ function Home() {
               <p className="text-[22px] font-[700] md:text-[32px] text-[#232323] ">Welcome, {user.name}</p>
 
               <p className="text-[18px] md:text-[22px] font-[400] text-[#969696] py-4 ">Email: {user.email}</p>
-              <UpdateUserForm/>
+              <UpdateUserForm />
             </div>
 
             {/* Stores List*/}
-                        <div className="my-4">
-                          <div className="text-[20px] md:text-[25px] font-[400] text-left mb-3">Stores</div>
-            
-                          {/* Store Filters */}
-                          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 p-4 bg-gray-50 rounded-lg">
-                            <div>
-                               <TextField
-                                id="name"
-                                label="Filter By Name"
-                                variant="outlined"
-                                value={storeFilters.name}
-                                onChange={(e) => setStoreFilters(prev => ({ ...prev, ["name"]: e.target.value }))}
-                                className="w-full"
-                                size="small"
-                              />
-                            </div>
-                            <div>
-                               <TextField
-                                id="email"
-                                label="Filter By Email"
-                                variant="outlined"
-                                value={storeFilters.email}
-                                onChange={(e) => setStoreFilters(prev => ({ ...prev, ["email"]: e.target.value }))}
-                                className="w-full"
-                                size="small"
-                              />
-                            </div>
-                            <div>
-                              <TextField
-                                id="address"
-                                label="Filter By Address"
-                                variant="outlined"
-                                value={storeFilters.address}
-                                onChange={(e) => setStoreFilters(prev => ({ ...prev, ["address"]: e.target.value }))}
-                                className="w-full"
-                                size="small"
-                              />
-                            </div>
-                            <div>
-                             <FormControl fullWidth size="small">
-                                <InputLabel id="demo-select-small-label">Sort By</InputLabel>
-                                <Select
-                                  labelId="demo-select-small-label"
-                                  id="demo-select-small"
-                                  value={storeFilters.sortBy}
-                                  label="Sort By"
-                                  onChange={(e) => setStoreFilters(prev => ({ ...prev, ["sortBy"]: e.target.value }))}
-                                >
-                                  <MenuItem value={"name"}>Name</MenuItem>
-                                  <MenuItem value={"email"}>Email</MenuItem>
-                                  <MenuItem value={"address"}>Address</MenuItem>
-                                  <MenuItem value={"role"}>Role</MenuItem>
-                                  <MenuItem value={"created_at"}>Created At</MenuItem>
-                                </Select>
-                              </FormControl>
-                            </div>
-                            <div>
-                              <FormControl fullWidth size="small">
-                                <InputLabel id="demo-select-small-label">Sort Order</InputLabel>
-                                <Select
-                                  labelId="demo-select-small-label"
-                                  id="demo-select-small"
-                                  value={storeFilters.sortOrder}
-                                  label="Sort Order"
-                                  onChange={(e) => setStoreFilters(prev => ({ ...prev, ["sortOrder"]: e.target.value }))}
-                                >
-                                  <MenuItem value={"ASC"}>Ascending</MenuItem>
-                                  <MenuItem value={"DESC"}>Descending</MenuItem>
-                                </Select>
-                              </FormControl>
-                            </div>
-                            <div className="flex items-end space-x-2">
-                              <button
-                                onClick={applyStoreFilters}
-                                className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
-                              >
-                                Apply Filters
-                              </button>
-                              <button
-                                onClick={resetStoreFilters}
-                                className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
-                              >
-                                Reset
-                              </button>
-                            </div>
-                          </div>
-                          </div>
+            <div className="my-4">
+              <div className="text-[20px] md:text-[25px] font-[400] text-left mb-3">Stores</div>
+
+              {/* Store Filters */}
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4 p-4 bg-gray-50 rounded-lg">
+                <div>
+                  <TextField
+                    id="name"
+                    label="Filter By Name"
+                    variant="outlined"
+                    value={storeFilters.name}
+                    onChange={(e) => setStoreFilters(prev => ({ ...prev, ["name"]: e.target.value }))}
+                    className="w-full"
+                    size="small"
+                  />
+                </div>
+                <div>
+                  <TextField
+                    id="email"
+                    label="Filter By Email"
+                    variant="outlined"
+                    value={storeFilters.email}
+                    onChange={(e) => setStoreFilters(prev => ({ ...prev, ["email"]: e.target.value }))}
+                    className="w-full"
+                    size="small"
+                  />
+                </div>
+                <div>
+                  <TextField
+                    id="address"
+                    label="Filter By Address"
+                    variant="outlined"
+                    value={storeFilters.address}
+                    onChange={(e) => setStoreFilters(prev => ({ ...prev, ["address"]: e.target.value }))}
+                    className="w-full"
+                    size="small"
+                  />
+                </div>
+                <div>
+                  <FormControl fullWidth size="small">
+                    <InputLabel id="demo-select-small-label">Sort By</InputLabel>
+                    <Select
+                      labelId="demo-select-small-label"
+                      id="demo-select-small"
+                      value={storeFilters.sortBy}
+                      label="Sort By"
+                      onChange={(e) => setStoreFilters(prev => ({ ...prev, ["sortBy"]: e.target.value }))}
+                    >
+                      <MenuItem value={"name"}>Name</MenuItem>
+                      <MenuItem value={"email"}>Email</MenuItem>
+                      <MenuItem value={"address"}>Address</MenuItem>
+                      <MenuItem value={"role"}>Role</MenuItem>
+                      <MenuItem value={"created_at"}>Created At</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
+                <div>
+                  <FormControl fullWidth size="small">
+                    <InputLabel id="demo-select-small-label">Sort Order</InputLabel>
+                    <Select
+                      labelId="demo-select-small-label"
+                      id="demo-select-small"
+                      value={storeFilters.sortOrder}
+                      label="Sort Order"
+                      onChange={(e) => setStoreFilters(prev => ({ ...prev, ["sortOrder"]: e.target.value }))}
+                    >
+                      <MenuItem value={"ASC"}>Ascending</MenuItem>
+                      <MenuItem value={"DESC"}>Descending</MenuItem>
+                    </Select>
+                  </FormControl>
+                </div>
+                <div className="flex items-end space-x-2">
+                  <button
+                    onClick={applyStoreFilters}
+                    className="px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600"
+                  >
+                    Apply Filters
+                  </button>
+                  <button
+                    onClick={resetStoreFilters}
+                    className="px-4 py-2 bg-gray-500 text-white rounded-md hover:bg-gray-600"
+                  >
+                    Reset
+                  </button>
+                </div>
+              </div>
+            </div>
 
             <div>
               {isStoreLoading ? <div>Loading...</div> :
@@ -247,9 +245,9 @@ function Home() {
                         </div>
                           :
                           <>
-                          <div className="flex items-center justify-center"> Your Rating: <span className="text-2xl px-1"> {store.user_rating} </span><Star/></div>
-                          <RatingForm create={false} store_id={store.id} owner_id={store.owner_id} rating={store.user_rating} handleGetStores={() => handleGetStores(storeFilters)} />
-                            
+                            <div className="flex items-center justify-center"> Your Rating: <span className="text-2xl px-1"> {store.user_rating} </span><Star /></div>
+                            <RatingForm create={false} store_id={store.id} owner_id={store.owner_id} rating={store.user_rating} handleGetStores={() => handleGetStores(storeFilters)} />
+
                           </>}
 
                         <div className="mt-2 pt-2 border-t border-gray-100 flex justify-evenly">
